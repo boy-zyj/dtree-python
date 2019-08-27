@@ -76,6 +76,16 @@ class Condition(_Base):
     def validate(self, data):
         raise NotImplementedError
 
+    def __or__(self, other):
+        return Or(self, other)
+
+    __ior__ = __or__
+
+    def __and__(self, other):
+        return And(self, other)
+
+    __iand__ = __and__
+
 
 class And(Condition):
 
