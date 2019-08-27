@@ -167,13 +167,13 @@ class Runner(_Base):
     def run(self, data):
         raise NotImplementedError
 
-    def __or__(self, runner):
+    def __div__(self, runner):
         assert isinstance(runner, Runner)
         runners = self.runners if isinstance(self, Chain) else (self,)
         runners += runner.runners if isinstance(runner, Chain) else (runner,)
         return Chain(*runners)
 
-    __ior__ = __or__
+    __idiv__ = __div__
 
 
 class Action(Runner):
@@ -195,7 +195,6 @@ class Chain(Action):
 
     @property
     def description(self):
-        # TODO 更好的展现方式
         return ' ==> '.join(runner.description for runner in self.runners)
 
 
