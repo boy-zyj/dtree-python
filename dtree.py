@@ -290,7 +290,7 @@ class DTree(Runner):
     @property
     def children(self):
         if self.else_:
-            return list(self._children.items()) + [(else_cond, self._else)]
+            return list(self._children.items()) + [(else_, self._else)]
         return list(self._children.items())
 
     @property
