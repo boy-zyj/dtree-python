@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
-__version__ = "1.0.0"
-
 from collections import OrderedDict
 
+__version__ = "1.0.0"
 __author__ = 'YJ Zou'
 
 
@@ -172,7 +170,6 @@ class Else(Condition):
         return id(Else)
 
 
-else_cond = Else()
 else_ = Else()
 
 
