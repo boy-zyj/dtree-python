@@ -7,11 +7,15 @@ from collections import OrderedDict
 __author__ = 'YJ Zou'
 
 
-class UnknownPolicy(Exception):
+class Error(Exception):
     pass
 
 
-class NoMatch(Exception):
+class UnknownPolicyError(Error):
+    pass
+
+
+class NoMatchError(Error):
     pass
 
 
@@ -22,7 +26,7 @@ def run_by_once_policy(self, data):
     if self.else_:
         return self.else_.run(data)
     else:
-        raise NoMatch
+        raise NoMatchError
 
 
 def run_by_repeat_policy(self, data):
@@ -30,12 +34,12 @@ def run_by_repeat_policy(self, data):
         try:
             if cond.validate(data):
                 return run.run(data)
-        except NoMatch:
+        except NoMatchError:
             continue
     if self.else_:
         return self.else_.run(data)
     else:
-        raise NoMatch
+        raise NoMatchError
 
 ONCE = 'once'
 REPEAT = 'repeat'
@@ -248,7 +252,7 @@ class DTree(Runner):
         kwargs = node.kwargs
         policy = kwargs.get('policy') or self.default_policy
         if policy is not None and policy not in POLICIES:
-            raise UnknownPolicy
+            raise UnknownPolicyError(policy)
         self._policy = policy
         self._children = OrderedDict()
         self._else = None
@@ -299,7 +303,7 @@ class DTree(Runner):
     def run(self, data):
         run_method = POLICIES.get(self.policy)
         if run_method is None:
-            raise UnknownPolicy
+            raise UnknownPolicyError(self.policy)
         return run_method(self, data)
 
     def __str__(self):
