@@ -9,7 +9,7 @@ f.close()
 setup(
     name='dtree',
     version=__import__('dtree').__version__,
-    description='a little flow-process implementation',
+    description='a little flow-based process engine implementation',
     long_description=readme,
     author='YJ Zou',
     author_email='boy-zyj@gmail.com',
