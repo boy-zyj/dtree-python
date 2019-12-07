@@ -27,7 +27,7 @@ def run_by_once_policy(self, obj):
         raise NoMatchError
 
 
-def run_by_repeat_policy(self, obj):
+def run_by_recursive_policy(self, obj):
     for cond, run in self._children.items():
         try:
             if cond.validate(obj):
@@ -43,7 +43,7 @@ ONCE = 'once'
 REPEAT = 'repeat'
 POLICIES = {
     ONCE: run_by_once_policy,
-    REPEAT: run_by_repeat_policy,
+    REPEAT: run_by_recursive_policy,
 }
 DEFAULT_POLICY = ONCE
 
@@ -54,14 +54,22 @@ def register_policy(policy, run_method):
     POLICIES[policy] = run_method
 
 
-class _Base(object):
+class Description(object):
+
+    _description = None
 
     @property
     def description(self):
+        if self._description is not None:
+            return self._description
         return self.__class__.__name__
 
+    @description.setter
+    def description(self, description):
+        self._description = description
 
-class Condition(_Base):
+
+class Condition(Description):
 
     @property
     def _unique(self):
@@ -173,7 +181,7 @@ class Else(Condition):
 else_ = Else()
 
 
-class Runner(_Base):
+class Runner(Description):
 
     def run(self, obj):
         raise NotImplementedError
