@@ -204,6 +204,16 @@ class Catch(Runner):
             else:
                 raise e
 
+    def get_default_description(self):
+        rv = "CATCH"
+        if self.next_runner is not None:
+            rv += " -> %s" % self.next_runner.description
+        if self.error_handler is None:
+            rv += " -> HANDLE"
+        else:
+            rv += ' -> THROW'
+        return rv
+
 
 class Action(Runner):
     pass
