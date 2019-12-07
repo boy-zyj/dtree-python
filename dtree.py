@@ -306,6 +306,7 @@ class DTree(Runner):
         else:
             raise TypeError('Expected Node, Action or DTree object, got %s' % type(run))
         if isinstance(cond, Else):
+            assert self._else is None, "Expected only one Else"
             self._else = run
         else:
             self._children[cond] = run
