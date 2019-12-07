@@ -61,27 +61,18 @@ class Description(object):
     @property
     def description(self):
         if self._description is not None:
-            return self._description
-        return self.__class__.__name__
+            self._description = self.get_default_description()
+        return self._description
 
     @description.setter
     def description(self, description):
         self._description = description
 
+    def get_default_description(self):
+        return self.__class__.__name__
+
 
 class Condition(Description):
-
-    @property
-    def _unique(self):
-        return id(self)
-
-    def __hash__(self):
-        return hash(self._unique)
-
-    def __eq__(self, other):
-        if not isinstance(other, Condition):
-            return False
-        return self._unique == other._unique
 
     def validate(self, obj):
         raise NotImplementedError
@@ -99,71 +90,47 @@ class Condition(Description):
 
 class And(Condition):
 
-    def __init__(self, *conds):
-        self._conds = conds
+    def __init__(self, *conditions):
+        self._conditions = conditions
 
     def validate(self, obj):
-        return all(cond.validate(obj) for cond in self._conds)
+        return all(condition.validate(obj) for condition in self._conditions)
 
-    @property
-    def _unique(self):
-        _uniques = tuple([cond._unique for cond in self._conds])
-        return (self.__class__,) + _uniques
-
-    @property
-    def description(self):
-        desc_list = [cond.description for cond in self._conds]
-        return 'AND(' + ', '.join(desc_list) + ')'
+    def get_default_description(self):
+        L = [condition.description for condition in self._conditions]
+        return 'AND(' + ', '.join(L) + ')'
 
 
 class Or(Condition):
 
-    def __init__(self, *conds):
-        self._conds = conds
+    def __init__(self, *conditions):
+        self._conditions = conditions
 
     def validate(self, obj):
-        return any(cond.validate(obj) for cond in self._conds)
+        return any(condition.validate(obj) for condition in self._conditions)
 
-    @property
-    def _unique(self):
-        _uniques = tuple([cond._unique for cond in self._conds])
-        return (self.__class__,) + _uniques
-
-    @property
-    def description(self):
-        desc_list = [cond.description for cond in self._conds]
-        return 'OR(' + ', '.join(desc_list) + ')'
+    def get_default_description(self):
+        L = [condition.description for condition in self._conditions]
+        return 'OR(' + ', '.join(L) + ')'
 
 
 class Not(Condition):
 
-    def __init__(self, cond):
-        self._cond = cond
-
-    @property
-    def _unique(self):
-        cond = self._cond
-        n = 1
-        while isinstance(cond, Not):
-            n += 1
-            cond = cond._cond
-        if n % 2:
-            return (self.__class__, cond._unique)
-        return cond._unique
+    def __init__(self, condition):
+        self._condition = condition
 
     def validate(self, obj):
-        return not self._cond.validate(obj)
+        return not self._condition.validate(obj)
 
-    @property
-    def description(self):
-        cond = self._cond
+    def get_default_description(self):
+        condition = self._condition
         n = 1
-        while isinstance(cond, Not):
+        while isinstance(condition, Not):
             n += 1
-            cond = cond._cond
+            condition = condition._condition
         if n % 2:
-            return 'NOT(' + cond.description + ')'
-        return cond.description
+            return 'NOT(' + condition.description + ')'
+        return condition.description
 
 
 class Else(Condition):
@@ -171,11 +138,8 @@ class Else(Condition):
     def validate(self, obj):
         return True
 
-    def __eq__(self, other):
-        return isinstance(other, Else)
-
-    def __hash__(self):
-        return id(Else)
+    def get_default_description(self):
+        return "ELSE"
 
 
 else_ = Else()
