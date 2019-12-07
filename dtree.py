@@ -205,22 +205,33 @@ class Action(Runner):
     pass
 
 
+class ToAction(Action):
+
+    def __init__(self, runner, description=None):
+        self._runner = runner
+        if description is None and isinstance(runner, Runner):
+            description = runner.description
+        self._description = description
+
+    def run(self, obj):
+        return self._runner(obj)
+
+
 class Chain(Action):
 
     def __init__(self, *runners):
         for runner in runners:
             assert isinstance(runner, Runner)
-        self.runners = runners
+        self._runners = runners
 
     def run(self, obj):
         ret = None
-        for runner in self.runners:
+        for runner in self._runners:
             ret = runner.run(obj)
         return ret
 
-    @property
-    def description(self):
-        return ' ==> '.join(runner.description for runner in self.runners)
+    def get_default_description(self):
+        return ' ==> '.join(runner.description for runner in self._runners)
 
 
 class Node(object):
