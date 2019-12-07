@@ -237,13 +237,10 @@ class Chain(Action):
 class Node(object):
 
     def __init__(self, *args, **kwargs):
-        for cond, run in args:
-            assert is_condition(cond)
-            assert (
-                is_action(run) or
-                is_node(run) or
-                is_dtree(run)
-            )
+        for condition, runner_or_node in args:
+            assert is_condition(condition), "Expected Condition, got %s" % type(condition)
+            assert is_runner(runner_or_node) or is_node(runner_or_node), \
+                "Expected Runner or Node, got %s" % type(runner_or_node)
         self.args = args
         self.kwargs = kwargs
 
@@ -352,6 +349,10 @@ def is_node(o):
 
 def is_action(o):
     return isinstance(o, Action)
+
+
+def is_runner(o):
+    return isinstance(o, Runner)
 
 
 def is_condition(o):
