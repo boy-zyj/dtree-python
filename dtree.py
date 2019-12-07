@@ -91,6 +91,9 @@ class Condition(Description):
 
     __iand__ = __and__
 
+    def __invert__(self):
+        return Not(self)
+
 
 class And(Condition):
 
