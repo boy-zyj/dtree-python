@@ -166,10 +166,8 @@ class Runner(Description):
         raise NotImplementedError
 
     def __div__(self, runner):
-        assert isinstance(runner, Runner)
-        runners = self.runners if isinstance(self, Chain) else (self,)
-        runners += runner.runners if isinstance(runner, Chain) else (runner,)
-        return Chain(*runners)
+        assert isinstance(runner, Runner), "Expected Runner, got %s" % type(runner)
+        return Chain(self, runner)
 
     __idiv__ = __div__
 
@@ -177,18 +175,18 @@ class Runner(Description):
         return Chain(self, next_runner)
 
     def catch(self, next_runner=None, error_handle=None):
-        return Capture(self, next_runner, error_handle)
+        return Catch(self, next_runner, error_handle)
 
     def __call__(self, obj):
         return self.run(obj)
 
 
-class Capture(Runner):
+class Catch(Runner):
 
-    def __init__(self, pre_runner, next_runner=None, error_handle=None):
+    def __init__(self, pre_runner, next_runner=None, error_handler=None):
         self.pre_runner = pre_runner
         self.next_runner = next_runner
-        self.error_handle = error_handle
+        self.error_handler = error_handler
 
     def run(self, obj):
         try:
@@ -196,8 +194,8 @@ class Capture(Runner):
         except Exception as e:
             if self.next_runner:
                 ret = self.next_runner.run(obj)
-            if self.error_handle:
-                self.error_handle(obj, e)
+            if self.error_handler:
+                self.error_handler(obj, e)
                 return ret
             else:
                 raise e
