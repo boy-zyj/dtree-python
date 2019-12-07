@@ -195,7 +195,7 @@ class Catch(Runner):
             if self.next_runner:
                 ret = self.next_runner.run(obj)
             if self.error_handler:
-                self.error_handler(obj, e)
+                self.error_handler(e, obj)
                 return ret
             else:
                 raise e
