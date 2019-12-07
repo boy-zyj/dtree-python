@@ -18,9 +18,9 @@ class NoMatchError(Error):
 
 
 def run_by_once_policy(self, obj):
-    for cond, run in self._children.items():
-        if cond.validate(obj):
-            return run.run(obj)
+    for condition, runner in self._children.items():
+        if condition.validate(obj):
+            return runner.run(obj)
     if self.else_:
         return self.else_.run(obj)
     else:
@@ -28,10 +28,10 @@ def run_by_once_policy(self, obj):
 
 
 def run_by_recursive_policy(self, obj):
-    for cond, run in self._children.items():
+    for condition, runner in self._children.items():
         try:
-            if cond.validate(obj):
-                return run.run(obj)
+            if condition.validate(obj):
+                return runner.run(obj)
         except NoMatchError:
             continue
     if self.else_:
