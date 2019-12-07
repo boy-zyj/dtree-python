@@ -2,7 +2,7 @@
 from collections import OrderedDict
 
 __version__ = "1.0.0"
-__author__ = 'YJ Zou'
+__author__ = 'ZouYJ'
 
 
 class Error(Exception):
