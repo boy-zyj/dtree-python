@@ -39,6 +39,7 @@ def run_by_recursive_policy(self, obj):
     else:
         raise NoMatchError
 
+
 ONCE = 'once'
 RECURSIVE = 'recursive'
 POLICIES = {
@@ -60,7 +61,7 @@ class Description(object):
 
     @property
     def description(self):
-        if self._description is not None:
+        if self._description is None:
             self._description = self.get_default_description()
         return self._description
 
@@ -217,7 +218,7 @@ class ToAction(Action):
         return self._runner(obj)
 
 
-pass_ = ToAction(lambda obj:None, "PASS")
+pass_ = ToAction(lambda obj: None, "PASS")
 
 
 class Chain(Action):
