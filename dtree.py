@@ -40,10 +40,10 @@ def run_by_recursive_policy(self, obj):
         raise NoMatchError
 
 ONCE = 'once'
-REPEAT = 'repeat'
+RECURSIVE = 'recursive'
 POLICIES = {
     ONCE: run_by_once_policy,
-    REPEAT: run_by_recursive_policy,
+    RECURSIVE: run_by_recursive_policy,
 }
 DEFAULT_POLICY = ONCE
 
