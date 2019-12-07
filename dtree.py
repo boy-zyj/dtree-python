@@ -217,6 +217,9 @@ class ToAction(Action):
         return self._runner(obj)
 
 
+pass_ = ToAction(lambda obj:None, "PASS")
+
+
 class Chain(Action):
 
     def __init__(self, *runners):
