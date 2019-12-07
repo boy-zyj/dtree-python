@@ -77,6 +77,9 @@ class Condition(Description):
     def validate(self, obj):
         raise NotImplementedError
 
+    def __call__(self, obj):
+        return self.validate(obj)
+
     def __or__(self, other):
         return Or(self, other)
 
@@ -145,6 +148,18 @@ class Else(Condition):
 else_ = Else()
 
 
+class ToCondition(Condition):
+
+    def __init__(self, validator, description=None):
+        self._validator = validator
+        if description is None and isinstance(validator, Condition):
+            description = validator.description
+        self._description = description
+
+    def validate(self, obj):
+        return self._validator(obj)
+
+
 class Runner(Description):
 
     def run(self, obj):
@@ -163,6 +178,9 @@ class Runner(Description):
 
     def catch(self, next_runner=None, error_handle=None):
         return Capture(self, next_runner, error_handle)
+
+    def __call__(self, obj):
+        return self.run(obj)
 
 
 class Capture(Runner):
