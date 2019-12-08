@@ -387,7 +387,7 @@ class ValueGetter(object):
         self._description = description
         self._getter = getter
 
-    def get_value_of(self, obj):
+    def of(self, obj):
         return self._getter(obj)
 
     def _to_condition(self, validator, description=None):
@@ -396,61 +396,61 @@ class ValueGetter(object):
     def eq(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) == other.get_value_of(obj),
+                lambda obj: self.of(obj) == other.of(obj),
                 "%s = %s" % (self._description, other._description),
             )
         return self._to_condition(
-            lambda obj: self.get_value_of(obj) == other,
+            lambda obj: self.of(obj) == other,
             "%s = %s" % (self._description, other),
         )
 
     def lt(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) < other.get_value_of(obj),
+                lambda obj: self.of(obj) < other.of(obj),
                 "%s < %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) < other, "%s < %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) < other, "%s < %s" % (self._description, other))
 
     def le(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) <= other.get_value_of(obj),
+                lambda obj: self.of(obj) <= other.of(obj),
                 "%s <= %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) <= other, "%s <= %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) <= other, "%s <= %s" % (self._description, other))
 
     def gt(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) > other.get_value_of(obj),
+                lambda obj: self.of(obj) > other.of(obj),
                 "%s > %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) > other, "%s > %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) > other, "%s > %s" % (self._description, other))
 
     def ge(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) >= other.get_value_of(obj),
+                lambda obj: self.of(obj) >= other.of(obj),
                 "%s >= %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) >= other, "%s >= %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) >= other, "%s >= %s" % (self._description, other))
 
     def in_(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) in other.get_value_of(obj),
+                lambda obj: self.of(obj) in other.of(obj),
                 "%s in %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) in other, "%s in %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) in other, "%s in %s" % (self._description, other))
 
     def is_(self, other):
         if isinstance(other, ValueGetter):
             return self._to_condition(
-                lambda obj: self.get_value_of(obj) is other.get_value_of(obj),
+                lambda obj: self.of(obj) is other.of(obj),
                 "%s is %s" % (self._description, other._description),
             )
-        return self._to_condition(lambda obj: self.get_value_of(obj) is other, "%s is %s" % (self._description, other))
+        return self._to_condition(lambda obj: self.of(obj) is other, "%s is %s" % (self._description, other))
 
     def test(self, validator, description=None):
         return self._to_condition(validator, description)
