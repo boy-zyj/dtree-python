@@ -32,6 +32,8 @@ figure out what gift to give with the following logics:
 ```
 
 ```python
+from dtree import *
+
 student = {
     'age': 15,
     'interest': 'reading',
