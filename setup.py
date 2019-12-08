@@ -11,7 +11,7 @@ setup(
     description='a little flow-based process engine implementation',
     long_description=readme,
     author='ZouYJ',
-    author_email='boy-zyj@gmail.com',
+    author_email='boyzouyj@gmail.com',
     url='https://github.com/boy-zyj/dtree-python',
     py_modules=['dtree'],
     classifiers=[
