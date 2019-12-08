@@ -12,7 +12,7 @@ setup(
     long_description=readme,
     author='ZouYJ',
     author_email='boy-zyj@gmail.com',
-    url='https://github.com/coleifer/peewee/',
+    url='https://github.com/boy-zyj/dtree-python',
     py_modules=['dtree'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
