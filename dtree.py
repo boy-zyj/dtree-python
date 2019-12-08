@@ -178,8 +178,8 @@ class Runner(Description):
     def then(self, next_runner):
         return Chain(self, next_runner)
 
-    def catch(self, next_runner=None, error_handle=None):
-        return Catch(self, next_runner, error_handle)
+    def catch(self, next_runner=None, error_handler=None):
+        return Catch(self, next_runner, error_handler)
 
     def __call__(self, obj):
         return self.run(obj)
