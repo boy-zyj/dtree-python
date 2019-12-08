@@ -196,6 +196,7 @@ class Catch(Runner):
         try:
             return self.pre_runner.run(obj)
         except Exception as e:
+            ret = None
             if self.next_runner:
                 ret = self.next_runner.run(obj)
             if self.error_handler:
