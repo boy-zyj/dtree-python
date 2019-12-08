@@ -10,6 +10,7 @@ setup(
     version=__import__('dtree').__version__,
     description='a little flow-based process engine implementation',
     long_description=readme,
+    long_description_content_type="text/markdown",
     author='ZouYJ',
     author_email='boyzouyj@gmail.com',
     url='https://github.com/boy-zyj/dtree-python',
