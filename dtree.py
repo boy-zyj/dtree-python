@@ -310,22 +310,20 @@ class DTree(Runner):
             return self._policy or DEFAULT_POLICY
         return self._policy or self.parent.policy
 
-    def add_child(self, cond, run):
-        if is_action(run):
-            pass
-        elif is_node(run):
-            run = self.__class__(run)
-        elif is_dtree(run):
-            run = self.__class__(run.node)
-        else:
-            raise TypeError('Expected Node, Action or DTree object, got %s' % type(run))
-        if isinstance(cond, Else):
+    def add_child(self, condition, runner_or_node):
+        if is_node(runner_or_node):
+            runner_or_node = self.__class__(runner_or_node)
+        elif is_dtree(runner_or_node):
+            runner_or_node = self.__class__(runner_or_node.node)
+        elif not isinstance(runner_or_node, Runner):
+            raise TypeError('Expected Node, Action or DTree object, got %s' % type(runner_or_node))
+        if isinstance(condition, Else):
             assert self._else is None, "Expected only one Else"
-            self._else = run
+            self._else = runner_or_node
         else:
-            self._children[cond] = run
-        if is_dtree(run):
-            run.parent = self
+            self._children[condition] = runner_or_node
+        if is_dtree(runner_or_node):
+            runner_or_node.parent = self
 
     @property
     def children(self):
@@ -351,13 +349,13 @@ class DTree(Runner):
         if self.depth == 0:
             policy_msg = self.policy != DEFAULT_POLICY and '(%s)' % self.policy or ''
             rv += dtree_mark + 'root%s:\n' % policy_msg
-        for cond, run in self.children:
-            if is_action(run):
-                rv += indent * (self.depth + 1) + action_mark + cond.description + ' --> ' + run.description + '\n'
-            elif is_dtree(run):
-                policy_msg = run.policy != DEFAULT_POLICY and '(%s)' % run.policy or ''
-                rv += indent * (self.depth + 1) + dtree_mark + cond.description + '%s:\n' % policy_msg
-                rv += str(run)
+        for condition, runner in self.children:
+            if is_dtree(runner):
+                policy_msg = runner.policy != DEFAULT_POLICY and '(%s)' % runner.policy or ''
+                rv += indent * (self.depth + 1) + dtree_mark + condition.description + '%s:\n' % policy_msg
+                rv += str(runner)
+            elif is_runner(runner):
+                rv += indent * (self.depth + 1) + action_mark + condition.description + ' --> ' + runner.description + '\n'
         return rv
 
 
