@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
     readme = f.read()
 
 setup(
-    name='dtree',
+    name='dtree-python',
     version=__import__('dtree').__version__,
     description='a little flow-based process engine implementation',
     long_description=readme,
