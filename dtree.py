@@ -314,8 +314,7 @@ class DTree(Runner):
     def add_child(self, condition, runner_or_node):
         if is_node(runner_or_node):
             runner_or_node = self.__class__(runner_or_node)
-        elif is_dtree(runner_or_node):
-            runner_or_node = self.__class__(runner_or_node.node)
+            runner_or_node.parent = self
         elif not isinstance(runner_or_node, Runner):
             raise TypeError('Expected Node, Action or DTree object, got %s' % type(runner_or_node))
         if isinstance(condition, Else):
@@ -323,8 +322,6 @@ class DTree(Runner):
             self._else = runner_or_node
         else:
             self._children[condition] = runner_or_node
-        if is_dtree(runner_or_node):
-            runner_or_node.parent = self
 
     @property
     def children(self):
