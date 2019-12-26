@@ -174,6 +174,7 @@ class Runner(Description):
         return Chain(self, runner)
 
     __idiv__ = __div__
+    __truediv__ = __div__
 
     def then(self, next_runner):
         return Chain(self, next_runner)

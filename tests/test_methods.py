@@ -5,6 +5,7 @@ from dtree import (
     Or,
     Not,
     And,
+    ToAction,
     Condition,
     ValueGetter,
 )
@@ -54,3 +55,21 @@ class CommonTestCase(unittest.TestCase):
         self.assertTrue(
             (~age.gt(20) & name.eq('yao')).validate(student)
         )
+
+    def testRunner(self):
+        i = [0]
+
+        def _add(s):
+            i[0] += 1
+
+        def _sub(s):
+            i[0] -= 1
+
+        add = ToAction(_add, "add 1")
+        sub = ToAction(_sub, "sub 1")
+
+        add.then(sub).then(add).run('')
+        self.assertTrue(i[0] == 1)
+
+        (add / sub / add).run('')
+        self.assertTrue(i[0] == 2)
