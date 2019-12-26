@@ -173,8 +173,7 @@ class Runner(Description):
         assert isinstance(runner, Runner), "Expected Runner, got %s" % type(runner)
         return Chain(self, runner)
 
-    __idiv__ = __div__
-    __truediv__ = __div__
+    __itruediv__ = __truediv__ = __idiv__ = __div__
 
     def then(self, next_runner):
         return Chain(self, next_runner)
