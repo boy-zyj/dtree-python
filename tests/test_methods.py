@@ -51,3 +51,6 @@ class CommonTestCase(unittest.TestCase):
         self.assertTrue(
             (~age.gt(20)).validate(student)
         )
+        self.assertTrue(
+            (~age.gt(20) & name.eq('yao')).validate(student)
+        )
