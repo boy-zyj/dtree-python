@@ -1,8 +1,32 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = 'ZouYJ'
+
+__all__ = (
+    "Error",
+    "UnknownPolicyError",
+    "NoMatchError",
+    "register_policy",
+    "Description",
+    "Condition",
+    "And",
+    "Or",
+    "Not",
+    "Else",
+    "else_",
+    "ToCondition",
+    "Runner",
+    "Catch",
+    "Action",
+    "ToAction",
+    "Chain",
+    "Node",
+    "DTree",
+    "ValueGetter",
+    "pass_",
+)
 
 
 class Error(Exception):
