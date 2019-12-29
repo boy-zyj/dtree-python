@@ -18,7 +18,7 @@ is_female = gender.eq("female")
 
 
 def give(item):
-    print("give %s" % item)
+    return "give %s" % item
 
 
 give_book = ToAction(lambda student: give("book"), "give book")
@@ -47,4 +47,5 @@ class DTreeTestCase(unittest.TestCase):
             )),
         ))
         print(rule)
-        rule.run(student)  # give book
+        gift = rule.run(student)  # give book
+        print(gift)
