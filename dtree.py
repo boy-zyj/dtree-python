@@ -42,7 +42,7 @@ class NoMatchError(Error):
 
 
 def run_by_once_policy(self, obj):
-    for condition, runner in self._children.items():
+    for condition, runner in self._condition_to_runner.items():
         if condition.validate(obj):
             return runner.run(obj)
     if self.else_:
@@ -52,7 +52,7 @@ def run_by_once_policy(self, obj):
 
 
 def run_by_recursive_policy(self, obj):
-    for condition, runner in self._children.items():
+    for condition, runner in self._condition_to_runner.items():
         try:
             if condition.validate(obj):
                 return runner.run(obj)
@@ -315,7 +315,7 @@ class DTree(Runner):
         if policy is not None and policy not in POLICIES:
             raise UnknownPolicyError(policy)
         self._policy = policy
-        self._children = OrderedDict()
+        self._condition_to_runner = OrderedDict()
         self._else = None
         args = node.args
         for cond, run in args:
@@ -345,13 +345,13 @@ class DTree(Runner):
             assert self._else is None, "Expected only one Else"
             self._else = runner_or_node
         else:
-            self._children[condition] = runner_or_node
+            self._condition_to_runner[condition] = runner_or_node
 
     @property
     def children(self):
         if self.else_:
-            return list(self._children.items()) + [(else_, self._else)]
-        return list(self._children.items())
+            return list(self._condition_to_runner.items()) + [(else_, self._else)]
+        return list(self._condition_to_runner.items())
 
     @property
     def else_(self):
