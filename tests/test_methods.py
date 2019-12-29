@@ -30,6 +30,10 @@ class CommonTestCase(unittest.TestCase):
         self.assertTrue(like.is_(None).validate(student))
         self.assertEqual(age.eq(18).description, "age = 18")
         self.assertIsInstance(age.eq(18), Condition)
+        self.assertTrue(like.none().validate(student))
+        self.assertTrue(name.notnone().validate(student))
+        self.assertTrue(like.boolfalse().validate(student))
+        self.assertTrue(name.booltrue().validate(student))
 
     def testCondition(self):
         self.assertTrue(And(name.eq('yao'), age.ge(18)).validate(student))

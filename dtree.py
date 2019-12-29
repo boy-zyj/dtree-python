@@ -472,5 +472,17 @@ class ValueGetter(object):
             )
         return self._to_condition(lambda obj: self.of(obj) is other, "%s is %s" % (self._description, other))
 
+    def none(self):
+        return self._to_condition(lambda obj: self.of(obj) is None, "%s is None" % self._description)
+
+    def notnone(self):
+        return self._to_condition(lambda obj: self.of(obj) is not None, "%s is not None" % self._description)
+
+    def booltrue(self):
+        return self._to_condition(lambda obj: bool(self.of(obj)), "%s is bool true" % self._description)
+
+    def boolfalse(self):
+        return self._to_condition(lambda obj: not bool(self.of(obj)), "%s is bool false" % self._description)
+
     def test(self, validator, description=None):
         return self._to_condition(validator, description)
