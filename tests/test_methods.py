@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from dtree import (
-    Or,
-    Not,
-    And,
-    ToAction,
-    Condition,
-    ValueGetter,
-)
+from dtree import *
 
 student = {
     'name': 'yao',
