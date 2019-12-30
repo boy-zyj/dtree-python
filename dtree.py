@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import functools
 from collections import OrderedDict
 
 __version__ = "1.0.3"
@@ -26,6 +27,8 @@ __all__ = (
     "DTree",
     "ValueGetter",
     "pass_",
+    "to_condition",
+    "to_action",
 )
 
 
@@ -486,3 +489,45 @@ class ValueGetter(object):
 
     def boolfalse(self):
         return self._to_condition(lambda obj: not bool(self.of(obj)), "%s is bool-false" % self._description)
+
+
+def to_condition(*args, **kwargs):
+
+    def decorator(validator, description=None):
+        return functools.wraps(validator)(
+            ToCondition(
+                validator,
+                getattr(validator, '__name__', str(validator)) if description is None else description,
+            )
+        )
+
+    if not args:
+        description = kwargs.get('description')
+        return functools.partial(decorator, description=description)
+
+    elif len(args) == 1 and not kwargs:
+        validator = args[0]
+        return decorator(validator)
+    else:
+        raise ValueError("cannot combine positional and keyword args in to_condition")
+
+
+def to_action(*args, **kwargs):
+
+    def decorator(runner, description=None):
+        return functools.wraps(runner)(
+            ToAction(
+                runner,
+                getattr(runner, '__name__', str(runner)) if description is None else description,
+            )
+        )
+
+    if not args:
+        description = kwargs.get('description')
+        return functools.partial(decorator, description=description)
+
+    elif len(args) == 1 and not kwargs:
+        runner = args[0]
+        return decorator(runner)
+    else:
+        raise ValueError("cannot combine positional and keyword args in to_condition")

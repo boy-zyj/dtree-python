@@ -70,3 +70,24 @@ class CommonTestCase(unittest.TestCase):
 
         (add / sub / add).run('')
         self.assertTrue(i[0] == 2)
+
+    def test_to_condition(self):
+
+        @to_condition(description="18+")
+        def is_adult(student):
+            return student['age'] >= 18
+
+        self.assertIsInstance(is_adult, Condition)
+        self.assertTrue(is_adult.validate(student))
+        self.assertEqual(is_adult.description, "18+")
+
+    def test_to_action(self):
+
+        @to_action(description="do nothing")
+        def do_nothing(student):
+            pass
+
+        self.assertIsInstance(do_nothing, Runner)
+        self.assertIsInstance(do_nothing, Action)
+        self.assertTrue(do_nothing.run(student) is None)
+        self.assertEqual(do_nothing.description, "do nothing")
