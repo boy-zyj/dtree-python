@@ -530,4 +530,4 @@ def to_action(*args, **kwargs):
         runner = args[0]
         return decorator(runner)
     else:
-        raise ValueError("cannot combine positional and keyword args in to_condition")
+        raise ValueError("cannot combine positional and keyword args in to_action")
