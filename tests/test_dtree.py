@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import textwrap
 import unittest
 
 from dtree import *
@@ -46,6 +47,22 @@ class DTreeTestCase(unittest.TestCase):
                 (else_, give_book),
             )),
         ))
-        print(rule)
+        s = textwrap.dedent(
+            """\
+            +++root:
+            |      +++age < 12:
+            |      |      +++interest = sports:
+            |      |      |      ---gender = female --> give note
+            |      |      |      ---ELSE --> give football
+            |      |      ---ELSE --> give book
+            |      +++age >= 15:
+            |      |      ---interest = writing --> give note
+            |      |      ---ELSE --> give book
+            |      +++ELSE:
+            |      |      ---gender = male --> give football
+            |      |      ---ELSE --> give book
+            """
+        )
+        self.assertEqual(s, str(rule))
         gift = rule.run(student)  # give book
-        print(gift)
+        self.assertEqual(gift, "give book")
