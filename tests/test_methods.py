@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 import unittest
 
 from dtree import *
@@ -91,3 +92,18 @@ class CommonTestCase(unittest.TestCase):
         self.assertIsInstance(do_nothing, Action)
         self.assertTrue(do_nothing.run(student) is None)
         self.assertEqual(do_nothing.description, "do nothing")
+
+    def test_usecache(self):
+
+        class student:
+            name = "yao"
+
+        def get_name(s):
+            print('start to get name')
+            time.sleep(2)
+            print('end')
+            return s.name
+
+        name = ValueGetter("name", get_name, usecache=True)
+        name.of(student)
+        name.of(student)

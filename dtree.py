@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import functools
+from weakref import WeakKeyDictionary
 from collections import OrderedDict
 
 __version__ = "1.0.3"
@@ -409,10 +410,28 @@ def isdtree(o):
     return isinstance(o, DTree)
 
 
+class GetterCache:
+
+    __mark = object()
+
+    def __init__(self, getter):
+        self._getter = getter
+        self._cache = WeakKeyDictionary()
+
+    def __call__(self, obj):
+        ret = self._cache.get(obj, self.__mark)
+        if ret is self.__mark:
+            ret = self._getter(obj)
+            self._cache[obj] = ret
+        return ret
+
+
 class ValueGetter(object):
 
-    def __init__(self, description, getter):
+    def __init__(self, description, getter, usecache=False):
         self._description = description
+        if usecache:
+            getter = GetterCache(getter)
         self._getter = getter
 
     def of(self, obj):
