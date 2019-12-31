@@ -412,15 +412,15 @@ def isdtree(o):
 
 class CachedGetter:
 
-    __mark = object()
+    _SENTINEL = object()
 
     def __init__(self, getter):
         self._getter = getter
         self._cache = WeakKeyDictionary()
 
     def __call__(self, obj):
-        ret = self._cache.get(obj, self.__mark)
-        if ret is self.__mark:
+        ret = self._cache.get(obj, self._SENTINEL)
+        if ret is self._SENTINEL:
             ret = self._getter(obj)
             self._cache[obj] = ret
         return ret
