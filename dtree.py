@@ -410,7 +410,7 @@ def isdtree(o):
     return isinstance(o, DTree)
 
 
-class GetterCache:
+class CachedGetter:
 
     __mark = object()
 
@@ -431,7 +431,7 @@ class ValueGetter(object):
     def __init__(self, description, getter, usecache=False):
         self._description = description
         if usecache:
-            getter = GetterCache(getter)
+            getter = CachedGetter(getter)
         self._getter = getter
 
     def of(self, obj):
