@@ -428,9 +428,9 @@ class CachedGetter:
 
 class ValueGetter(object):
 
-    def __init__(self, description, getter, usecache=False):
+    def __init__(self, description, getter, cache=False):
         self._description = description
-        if usecache:
+        if cache:
             getter = CachedGetter(getter)
         self._getter = getter
 

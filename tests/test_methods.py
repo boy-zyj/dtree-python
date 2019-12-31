@@ -100,10 +100,10 @@ class CommonTestCase(unittest.TestCase):
 
         def get_name(s):
             print('start to get name')
-            time.sleep(2)
+            time.sleep(1)
             print('end')
             return s.name
 
-        name = ValueGetter("name", get_name, usecache=True)
+        name = ValueGetter("name", get_name, cache=True)
         name.of(student)
         name.of(student)
