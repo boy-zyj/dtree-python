@@ -357,7 +357,7 @@ class DTree(Runner):
         return list(self._condition_to_runner.items())
 
     @property
-    def else_(self):
+    def else_runner(self):
         return self._else_runner
 
     def run(self, obj):
