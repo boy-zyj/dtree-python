@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import time
 import unittest
 
 from dtree import *
@@ -98,12 +97,15 @@ class CommonTestCase(unittest.TestCase):
         class student:
             name = "yao"
 
+        i = [0]
+
         def get_name(s):
-            print('start to get name')
-            time.sleep(1)
-            print('end')
+            i[0] += 1
             return s.name
 
         name = ValueGetter("name", get_name, cache=True)
         name.of(student)
         name.of(student)
+        name.of(student)
+        name.of(student)
+        self.assertEqual(i[0], 1)
