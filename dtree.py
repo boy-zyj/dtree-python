@@ -283,8 +283,8 @@ class Node(object):
 
     def __init__(self, *args, **kwargs):
         for condition, runner_or_node in args:
-            assert is_condition(condition), "Expected Condition, got %s" % type(condition)
-            assert is_runner(runner_or_node) or is_node(runner_or_node), \
+            assert iscondition(condition), "Expected Condition, got %s" % type(condition)
+            assert isrunner(runner_or_node) or isnode(runner_or_node), \
                 "Expected Runner or Node, got %s" % type(runner_or_node)
         self.args = args
         self.kwargs = kwargs
@@ -339,7 +339,7 @@ class DTree(Runner):
         return self._policy or self.parent.policy
 
     def add_child(self, condition, runner_or_node):
-        if is_node(runner_or_node):
+        if isnode(runner_or_node):
             runner_or_node = self.__class__(runner_or_node)
             runner_or_node.parent = self
         elif not isinstance(runner_or_node, Runner):
@@ -375,32 +375,32 @@ class DTree(Runner):
             policy_msg = self.policy != DEFAULT_POLICY and '(%s)' % self.policy or ''
             rv += dtree_mark + 'root%s:\n' % policy_msg
         for condition, runner in self.children:
-            if is_dtree(runner):
+            if isdtree(runner):
                 policy_msg = runner.policy != DEFAULT_POLICY and '(%s)' % runner.policy or ''
                 rv += indent * (self.depth + 1) + dtree_mark + condition.description + '%s:\n' % policy_msg
                 rv += str(runner)
-            elif is_runner(runner):
+            elif isrunner(runner):
                 rv += indent * (self.depth + 1) + action_mark + condition.description + ' --> ' + runner.description + '\n'
         return rv
 
 
-def is_node(o):
+def isnode(o):
     return isinstance(o, Node)
 
 
-def is_action(o):
+def isaction(o):
     return isinstance(o, Action)
 
 
-def is_runner(o):
+def isrunner(o):
     return isinstance(o, Runner)
 
 
-def is_condition(o):
+def iscondition(o):
     return isinstance(o, Condition)
 
 
-def is_dtree(o):
+def isdtree(o):
     return isinstance(o, DTree)
 
 
