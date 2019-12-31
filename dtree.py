@@ -29,6 +29,11 @@ __all__ = (
     "pass_",
     "to_condition",
     "to_action",
+    "isnode",
+    "isaction",
+    "iscondition",
+    "isrunner",
+    "isdtree",
 )
 
 
