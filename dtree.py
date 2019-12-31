@@ -48,8 +48,8 @@ def run_by_once_policy(self, obj):
     for condition, runner in self._condition_to_runner.items():
         if condition.validate(obj):
             return runner.run(obj)
-    if self.else_:
-        return self.else_.run(obj)
+    if self.else_runner:
+        return self.else_runner.run(obj)
     else:
         raise NoMatchError
 
@@ -61,8 +61,8 @@ def run_by_recursive_policy(self, obj):
                 return runner.run(obj)
         except NoMatchError:
             continue
-    if self.else_:
-        return self.else_.run(obj)
+    if self.else_runner:
+        return self.else_runner.run(obj)
     else:
         raise NoMatchError
 
@@ -352,7 +352,7 @@ class DTree(Runner):
 
     @property
     def children(self):
-        if self.else_:
+        if self.else_runner:
             return list(self._condition_to_runner.items()) + [(else_, self._else_runner)]
         return list(self._condition_to_runner.items())
 
