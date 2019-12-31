@@ -319,7 +319,7 @@ class DTree(Runner):
             raise UnknownPolicyError(policy)
         self._policy = policy
         self._condition_to_runner = OrderedDict()
-        self._else = None
+        self._else_runner = None
         args = node.args
         for cond, run in args:
             self.add_child(cond, run)
@@ -345,20 +345,20 @@ class DTree(Runner):
         elif not isinstance(runner_or_node, Runner):
             raise TypeError('Expected Node, Action or DTree object, got %s' % type(runner_or_node))
         if isinstance(condition, Else):
-            assert self._else is None, "Expected only one Else"
-            self._else = runner_or_node
+            assert self._else_runner is None, "Expected only one Else"
+            self._else_runner = runner_or_node
         else:
             self._condition_to_runner[condition] = runner_or_node
 
     @property
     def children(self):
         if self.else_:
-            return list(self._condition_to_runner.items()) + [(else_, self._else)]
+            return list(self._condition_to_runner.items()) + [(else_, self._else_runner)]
         return list(self._condition_to_runner.items())
 
     @property
     def else_(self):
-        return self._else
+        return self._else_runner
 
     def run(self, obj):
         run_method = POLICIES.get(self.policy)
