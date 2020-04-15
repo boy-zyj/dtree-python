@@ -429,9 +429,9 @@ class CachingGetter:
 
 class ValueAccessor(object):
 
-    def __init__(self, description, getter, cache=False):
+    def __init__(self, description, getter, caching=False):
         self._description = description
-        if cache:
+        if caching:
             getter = CachingGetter(getter)
         self._getter = getter
 
