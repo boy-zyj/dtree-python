@@ -103,7 +103,7 @@ class CommonTestCase(unittest.TestCase):
             i[0] += 1
             return s.name
 
-        name = ValueAccessor("name", get_name, cache=True)
+        name = ValueAccessor("name", get_name, caching=True)
         name.of(student)
         name.of(student)
         name.of(student)
