@@ -27,6 +27,7 @@ __all__ = (
     "Node",
     "DTree",
     "ValueAccessor",
+    "CachingGetter",
     "pass_",
     "to_condition",
     "to_action",
@@ -410,7 +411,7 @@ def isdtree(o):
     return isinstance(o, DTree)
 
 
-class CachedGetter:
+class CachingGetter:
 
     _SENTINEL = object()
 
@@ -431,7 +432,7 @@ class ValueAccessor(object):
     def __init__(self, description, getter, cache=False):
         self._description = description
         if cache:
-            getter = CachedGetter(getter)
+            getter = CachingGetter(getter)
         self._getter = getter
 
     def of(self, obj):
