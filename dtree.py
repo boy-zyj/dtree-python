@@ -18,6 +18,7 @@ __all__ = (
     "Not",
     "Else",
     "else_",
+    "ELSE",
     "ToCondition",
     "Runner",
     "Catch",
@@ -29,6 +30,7 @@ __all__ = (
     "ValueAccessor",
     "CachingGetter",
     "pass_",
+    "PASS",
     "to_condition",
     "to_action",
     "isnode",
@@ -183,7 +185,7 @@ class Else(Condition):
         return "ELSE"
 
 
-else_ = Else()
+else_ = ELSE = Else()
 
 
 class ToCondition(Condition):
@@ -266,7 +268,7 @@ class ToAction(Action):
         return self._runner(obj)
 
 
-pass_ = ToAction(lambda obj: None, "PASS")
+pass_ = PASS = ToAction(lambda obj: None, "PASS")
 
 
 class Chain(Action):
