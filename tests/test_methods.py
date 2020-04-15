@@ -9,14 +9,14 @@ student = {
     'height': 170,
     'like': None,
 }
-name = ValueGetter('name', lambda s: s['name'])
-age = ValueGetter('age', lambda s: s['age'])
-like = ValueGetter('like', lambda s: s['like'])
+name = ValueAccessor('name', lambda s: s['name'])
+age = ValueAccessor('age', lambda s: s['age'])
+like = ValueAccessor('like', lambda s: s['like'])
 
 
 class CommonTestCase(unittest.TestCase):
 
-    def testValueGetter(self):
+    def testValueAccessor(self):
         self.assertEqual(name.of(student), 'yao')
         self.assertEqual(age.of(student), 18)
         self.assertTrue(age.eq(18).validate(student))
@@ -103,7 +103,7 @@ class CommonTestCase(unittest.TestCase):
             i[0] += 1
             return s.name
 
-        name = ValueGetter("name", get_name, cache=True)
+        name = ValueAccessor("name", get_name, cache=True)
         name.of(student)
         name.of(student)
         name.of(student)

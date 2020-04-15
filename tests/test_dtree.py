@@ -10,9 +10,9 @@ student = {
     'gender': 'female',
 }
 
-age = ValueGetter("age", lambda student: student['age'])
-interest = ValueGetter("interest", lambda student: student['interest'])
-gender = ValueGetter("gender", lambda student: student['gender'])
+age = ValueAccessor("age", lambda student: student['age'])
+interest = ValueAccessor("interest", lambda student: student['interest'])
+gender = ValueAccessor("gender", lambda student: student['gender'])
 
 is_male = gender.eq("male")
 is_female = gender.eq("female")

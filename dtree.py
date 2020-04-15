@@ -26,7 +26,7 @@ __all__ = (
     "Chain",
     "Node",
     "DTree",
-    "ValueGetter",
+    "ValueAccessor",
     "pass_",
     "to_condition",
     "to_action",
@@ -426,7 +426,7 @@ class CachedGetter:
         return ret
 
 
-class ValueGetter(object):
+class ValueAccessor(object):
 
     def __init__(self, description, getter, cache=False):
         self._description = description
@@ -441,7 +441,7 @@ class ValueGetter(object):
         return ToCondition(validator, description)
 
     def eq(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) == other.of(obj),
                 "%s = %s" % (self._description, other._description),
@@ -452,7 +452,7 @@ class ValueGetter(object):
         )
 
     def lt(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) < other.of(obj),
                 "%s < %s" % (self._description, other._description),
@@ -460,7 +460,7 @@ class ValueGetter(object):
         return self._to_condition(lambda obj: self.of(obj) < other, "%s < %s" % (self._description, other))
 
     def le(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) <= other.of(obj),
                 "%s <= %s" % (self._description, other._description),
@@ -468,7 +468,7 @@ class ValueGetter(object):
         return self._to_condition(lambda obj: self.of(obj) <= other, "%s <= %s" % (self._description, other))
 
     def gt(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) > other.of(obj),
                 "%s > %s" % (self._description, other._description),
@@ -476,7 +476,7 @@ class ValueGetter(object):
         return self._to_condition(lambda obj: self.of(obj) > other, "%s > %s" % (self._description, other))
 
     def ge(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) >= other.of(obj),
                 "%s >= %s" % (self._description, other._description),
@@ -484,7 +484,7 @@ class ValueGetter(object):
         return self._to_condition(lambda obj: self.of(obj) >= other, "%s >= %s" % (self._description, other))
 
     def in_(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) in other.of(obj),
                 "%s in %s" % (self._description, other._description),
@@ -492,7 +492,7 @@ class ValueGetter(object):
         return self._to_condition(lambda obj: self.of(obj) in other, "%s in %s" % (self._description, other))
 
     def is_(self, other):
-        if isinstance(other, ValueGetter):
+        if isinstance(other, ValueAccessor):
             return self._to_condition(
                 lambda obj: self.of(obj) is other.of(obj),
                 "%s is %s" % (self._description, other._description),
