@@ -109,3 +109,7 @@ class CommonTestCase(unittest.TestCase):
         name.of(student)
         name.of(student)
         self.assertEqual(i[0], 1)
+
+    def test_value_accessor(self):
+        condition = name.test(lambda name: len(name) == 3, "name size == 3")
+        self.assertTrue(condition.validate(student))

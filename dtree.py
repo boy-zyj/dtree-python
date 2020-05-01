@@ -503,7 +503,10 @@ class ValueAccessor(object):
         return self._to_condition(lambda obj: self.of(obj) is other, "%s is %s" % (self._description, other))
 
     def test(self, validator, description=None):
-        return self._to_condition(validator, description)
+        return self._to_condition(
+            lambda obj: validator(self.of(obj)),
+            description,
+        )
 
     def none(self):
         return self._to_condition(lambda obj: self.of(obj) is None, "%s is None" % self._description)
