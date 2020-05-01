@@ -508,6 +508,8 @@ class ValueAccessor(object):
             description,
         )
 
+    predicate = test
+
     def none(self):
         return self._to_condition(lambda obj: self.of(obj) is None, "%s is None" % self._description)
 
